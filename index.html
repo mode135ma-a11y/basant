@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basant's Corner ✨</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: #0b132b;
+            color: #f1f5f9;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* خلفية التوهج الهادئة */
+        .glow-bg {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 380px;
+            height: 380px;
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.15) 0%, rgba(99, 102, 241, 0.12) 50%, rgba(0,0,0,0) 70%);
+            filter: blur(80px);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* ----- شاشة تسجيل الدخول بكلمة السر ----- */
+        .welcome-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #0b132b;
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            text-align: center;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+
+        .welcome-icon {
+            font-size: 60px;
+            margin-bottom: 15px;
+            animation: bounceSoft 2s infinite ease-in-out;
+        }
+
+        @keyframes bounceSoft {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .welcome-title {
+            font-size: 26px;
+            font-weight: 800;
+            color: #38bdf8;
+            margin-bottom: 8px;
+        }
+
+        .welcome-sub {
+            font-size: 14px;
+            color: #94a3b8;
+            margin-bottom: 25px;
+        }
+
+        .password-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .pass-input {
+            width: 100%;
+            padding: 14px 18px;
+            border-radius: 14px;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            background: rgba(30, 41, 59, 0.8);
+            color: #fff;
+            font-family: 'Tajawal', sans-serif;
+            font-size: 16px;
+            text-align: center;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .pass-input:focus {
+            border-color: #38bdf8;
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
+        }
+
+        .open-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #38bdf8 0%, #6366f1 100%);
+            color: #fff;
+            border: none;
+            padding: 14px 20px;
+            border-radius: 14px;
+            font-family: 'Tajawal', sans-serif;
+            font-size: 16px;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(56, 189, 248, 0.3);
+            transition: transform 0.2s ease;
+        }
+
+        .open-btn:active {
+            transform: scale(0.98);
+        }
+
+        .error-msg {
+            color: #f87171;
+            font-size: 13px;
+            display: none;
+            margin-top: 5px;
+        }
+
+        /* ----- الكارت الرئيسي للرسالة ----- */
+        .main-container {
+            min-height: 100vh;
+            width: 100vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 15px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .card {
+            background: rgba(28, 37, 65, 0.85);
+            border: 1px solid rgba(56, 189, 248, 0.25);
+            border-radius: 24px;
+            width: 100%;
+            max-width: 580px;
+            padding: 35px 25px;
+            text-align: center;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+        }
+
+        .card-header {
+            font-size: 26px;
+            font-weight: 900;
+            color: #38bdf8;
+            margin-bottom: 20px;
+        }
+
+        .message-box {
+            background: rgba(11, 19, 43, 0.6);
+            border-radius: 18px;
+            border: 1px solid rgba(148, 163, 184, 0.15);
+            padding: 25px 20px;
+            text-align: right;
+            line-height: 2.2;
+            font-size: 19px;
+            font-weight: 700;
+            color: #e2e8f0;
+            word-wrap: break-word;
+        }
+
+        .floating {
+            position: fixed;
+            pointer-events: none;
+            z-index: 2;
+            animation: floatUp 4s linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(105vh) scale(0.6); opacity: 0.8; }
+            100% { transform: translateY(-10vh) scale(1.1); opacity: 0; }
+        }
+
+        /* مشغل ميديا مخفي */
+        .hidden-media {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            opacity: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="glow-bg"></div>
+
+    <!-- شاشة الباسورد والدخول -->
+    <div class="welcome-screen" id="welcomeScreen">
+        <div class="welcome-icon">🌟✨</div>
+        <h1 class="welcome-title">مرحباً بسنت 👋✨</h1>
+        <p class="welcome-sub">اكتبي كلمة السر للدخول</p>
+        
+        <div class="password-box">
+            <input type="password" id="passInput" class="pass-input" placeholder="اكتبي الباسورد هنا...">
+            <button class="open-btn" onclick="checkPassword()">دخول 🚀</button>
+            <div class="error-msg" id="errorMsg">كلمة السر غير صحيحة، حاولي تاني!</div>
+        </div>
+    </div>
+
+    <!-- الصفحة الرئيسية -->
+    <div class="main-container">
+        <div class="card">
+            <h1 class="card-header">Special Message For Basant 🌟</h1>
+
+            <div class="message-box">
+                حبيت اقولك الكلمتين دول يا احسن دخل حياتي <br><br>
+                انا مش مصدق إن في حد زيك لسه موجود في الدنيا دي كلها 🥹🤍 <br>
+                وجودك بالنسبالي مش عادي خالص، دي نعمة كبيرة أوي بحمد ربنا عليها كل يوم وكل لحظة وكل ثانية 🙏💖 وجودك في حياتي هو الحاجة الوحيدة اللي خلتني أصدق إن فيه خير لسه في الدنيا، إن فيه حاجات حلوة لسه ممكن نعيش علشانها، إن فيه قلب ممكن يطبطب من غير مصلحة، إن فيه روح ممكن تحب بصدق وحنية وأمان 🥹🫂✨ <br><br>
+                وجودك في حياتي فرق معايا في كل حاجة، فرق في طاقتي، في قلبي، في تفكيري، في نظرتي لكل حاجة حواليا. بقيت أشوف الدنيا بلونك، بصوتك، بحضورك. بقيت أعيش مش مجرد أتنفس، بقيت أضحك من قلبي من غير ما أضطر أصطنع الضحكة 🥹😁 وجودك علمني إن مش كل حاجة ضاعت في الماضي كانت خسارة، وإن مش كل ألم بيكسرنا، فيه ألم بيبني جوانا حتة جديدة، حتة أقوى وأنضج ومستعدة تستقبل نور زيك لما يدخل حياتها 🍎 <br><br>
+                وجودك غيرني، خلى قلبي أطهر ونفسي أهدى وعيني أحلى، وجودك طمني وأنا اللي كنت تايه ومش لاقي طريقي. وجودك خلاني أحس إني مهم، إني محبوب، إني مش لوحدي 🕯️✨ وجودك في حياتي هو الهدية اللي مش كنت أعرف إني محتاجها، بس أول ما جات حسيت إن مفيش غيرها ينفع تسد الفراغ اللي جوايا. حسيت إن في حاجة رجعتني للحياة من تاني من غير ما أطلب، من غير ما أتوقع 🎁📈 <br><br>
+                كل لحظة وجودك فيها جنبي بتساوي سنين من الوحدة والخذلان والخوف. كل مرة تقولي فيها أنا هنا بحس إن الدنيا كلها وقفت معايا، بسمع صوتك كل مرة بتخليني قلبي يرقص من الفرح، وبحس إنك شايفني زي ما أنا، من غير تمثيل ولا أقنعة 🎭😊 وجودك هو اللي بيثبتلي كل يوم إن ربنا بيحبني بجد عشان بعتلي حد زيك يشيل عني همي ويشاركني فرحي ويصدق فيا حتى وأنا مش مصدق في نفسي 📸 <br><br>
+                إنتي اللي دايماً بتكوني أول حد بيحس بيا من قبل ما أتكلم، اللي بتفهمي سكوتي وتطبطبي عليا بكلمة وبحركة وباهتمام حقيقي مش مزيف 🙃.. وجودك هو النور اللي دخل قلبي من غير استئذان ومسح كل ظلام كنت شايفه قبل كده. وجودك هو الحضن اللي بيفرّحني من كتر ما هو طيب وحنين وبيخلي كل حاجة جوه قلبي ترجع تتنفس ❤️ إنتي اللي وجودك بس بيخليني أنام وأنا مطمئن، أصحى وأنا حاسس إني مش لوحدي، أعيط وأنا عارف إن في إيد هتمسح دموعي من غير ما أطلب 💧💎 <br><br>
+                وجودك هو اللي بيخليني أحارب في الدنيا وأنا مش خايف، هو اللي بيخليني أعدي الأيام الصعبة وأنا عارف إن في ضهر مش هيقع، في ضهر ماسكني بحب 💎🤝
+            </div>
+
+            <!-- فيديو مخفي في الخلفية للتشغيل التلقائي -->
+            <video id="bgVideo" class="hidden-media" loop playsinline>
+                <source src="https://tmpfiles.org/dl/19183416/df741d0d8786f0992b1679dc519595de.mp4" type="video/mp4">
+            </video>
+        </div>
+    </div>
+
+    <script>
+        const correctPassword = "basant";
+        const video = document.getElementById("bgVideo");
+
+        function checkPassword() {
+            const input = document.getElementById("passInput").value;
+            const errorMsg = document.getElementById("errorMsg");
+            const welcomeScreen = document.getElementById("welcomeScreen");
+
+            if (input === correctPassword) {
+                // تشغيل الأغنية فوراً عند الضغط على الزر
+                video.play();
+
+                welcomeScreen.style.opacity = "0";
+                setTimeout(() => {
+                    welcomeScreen.style.display = "none";
+                }, 800);
+            } else {
+                errorMsg.style.display = "block";
+            }
+        }
+
+        document.getElementById("passInput").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                checkPassword();
+            }
+        });
+
+        setInterval(() => {
+            const item = document.createElement('div');
+            item.classList.add('floating');
+            const icons = ['✨', '🌟', '💫', '🌸', '🎈'];
+            item.innerHTML = icons[Math.floor(Math.random() * icons.length)];
+            item.style.left = Math.random() * 100 + 'vw';
+            item.style.animationDuration = (Math.random() * 2 + 3) + 's';
+            document.body.appendChild(item);
+            setTimeout(() => { item.remove(); }, 4000);
+        }, 400);
+    </script>
+</body>
+</html>
